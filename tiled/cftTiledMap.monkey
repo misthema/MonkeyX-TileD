@@ -1,7 +1,8 @@
 Strict
 
-Private
-Import mojo
+#TEXT_FILES += "*.tmx|*.tsx"
+
+Import mojo.app
 Import skn3.xml
 Import os
 
@@ -15,8 +16,8 @@ Import cftTiledPropertySet
 Import cftTiledLayer
 Import cftTiledImageLayer
 
-Alias LoadString = mojo.app.LoadString
-Public
+
+Alias LoadString = app.LoadString
 
 #REM
     This class will basically work as a loader only,
@@ -61,10 +62,24 @@ Class ftTiledMap
         ' Tile dimensions (for tilemaps grid)
         Field tileWidth:Int, tileHeight:Int
         
+        ' Properties for map itself
+        Field properties:ftTiledPropertySet
+        
     
     Method New(path:String)
         _realPath = ExtractDir(RealPath(path))
         LoadXML(LoadString(path), path)
+    End
+    
+    Method GetTilesetForGID:ftTiledTileset(gid:Int)
+        Local tileset:ftTiledTileset
+        For tileset = EachIn tilesets.Values()
+            If gid >= tileset.firstGID And gid < tileset.lastGID
+                Return tileset
+            EndIf
+        Next
+        
+        Return Null
     End
     
     Private
@@ -74,7 +89,7 @@ Class ftTiledMap
         #END
         Method LoadXML:Void(rawXML:String, fileName:String)
             If rawXML.Length() = 0 Then
-                Error("Could not read XML file: " + fileName + "~nFrom: "+_realPath)
+                Error("Could not read XML file: " + fileName + "~nFrom: " + _realPath)
             End
             
             _error = New XMLError()
@@ -94,6 +109,11 @@ Class ftTiledMap
             Local map:XMLNode = _doc.GetChild().GetParent()
             
             LoadBasicData(map)
+            
+            tilesets = New StringMap<ftTiledTileset>()
+            layers = New StringMap<ftTiledLayer>()
+            objectGroups = New StringMap<ftTiledObjectGroup>()
+            imgLayers = New StringMap<ftTiledImageLayer>()
             
             Local tileset:ftTiledTileset
             Local layer:ftTiledLayer
@@ -156,6 +176,14 @@ Class ftTiledMap
             
             fullWidth = width * tileWidth
             fullHeight = height * tileHeight
+            
+            properties = New ftTiledPropertySet
+            
+            ' Load tilemap properties
+            Local props:XMLNode = node.GetChild("properties")
+            If props <> Null Then
+                properties.Extend(props)
+            End
         End
         
         '#Region Tileset
@@ -416,6 +444,9 @@ Class ftTiledMap
                         
                     Case "polygon", "polyline"
                         Local points:String[] = objSettings.GetAttribute("points", "").Split(",")
+                        
+                        obj.points = New Float[points.Length()]
+                        
                         Local i:Int
                         If points.Length() > 0 Then
                             For i = 0 Until points.Length()
@@ -462,7 +493,7 @@ Class ftTiledMap
             Local imgNode:XMLNode = node.GetChild("image")
             
             If imgNode <> Null Then
-                Local imgPath:String = node.GetAttribute("source")
+                Local imgPath:String = imgNode.GetAttribute("source")
                 imageLayer.image = LoadImage(imgPath)
                 
                 If imageLayer.image = Null Then

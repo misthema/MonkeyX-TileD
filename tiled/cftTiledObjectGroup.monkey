@@ -36,7 +36,8 @@ Class ftTiledObjectGroup
     Method New(parent:ftTiledMap)
         Self.parent = parent
         
-        objects = New StringMap<ftTiledObject>()
+        self.objects = New StringMap<ftTiledObject>()
+        Self.properties = New ftTiledPropertySet
     End
     
     ' Get object by name

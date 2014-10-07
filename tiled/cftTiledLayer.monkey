@@ -34,6 +34,7 @@ Class ftTiledLayer
         Self.width = width
         Self.height = height
         Self.parent = parent
+        Self.properties = New ftTiledPropertySet
         InitTileArray()
     End
     

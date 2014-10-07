@@ -34,6 +34,7 @@ Class ftTiledImageLayer
     
     Method New(parent:ftTiledMap)
         Self.parent = parent
+        Self.properties = New ftTiledPropertySet()
     End
     
     Method GetName:String()

@@ -55,6 +55,7 @@ Class ftTiledTileset
         Self.parent = parent
         
         tileProperties = New IntMap<ftTiledPropertySet>()
+        properties = New ftTiledPropertySet
     End
     
     #REM
@@ -81,3 +82,4 @@ Class ftTiledTileset
         Next
     End
 End
+
