@@ -11,41 +11,42 @@ Public
 #END
 
 Class ftTiledTileset
-    ' Name of this tileset
+    'summary: Name of this tileset
     Field name:String
     
-    ' Parent tilemap
+    'summary: Parent tilemap
     Field parent:ftTiledMap
     
-    ' Tileset image
+    'summary: Tileset image (atlas)
     Field image:Image
     
-    ' Tileset (image) dimensions in pixels
+    'summary: Tileset (image) dimensions in pixels
     Field width:Int, height:Int
     
-    ' Tileset dimensions in tiles
+    'summary: Tileset dimensions in tiles
     Field widthInTiles:Int, heightInTiles:Int
     
-    ' Tile dimensions
+    'summary: Tile dimensions
     Field tileWidth:Int, tileHeight:Int
     
-    ' Tile ID range
+    'summary: Tile ID range
     Field firstGID:Int = 1, lastGID:Int = 1
     
-    ' Settings
+    'summary: Tileset settings (for rendering)
     Field margin:Int, spacing:Int
+    'summary: Tileset settings (for rendering)
     Field offsetX:Int, offsetY:Int
     
-    ' Tileset properties
+    'summary: Tileset properties
     Field properties:ftTiledPropertySet
     
-    ' Tile specific properties (key: Tile ID, value: Properties)
+    'summary: Tile specific properties (key: Tile ID, value: Properties)
     Field tileProperties:IntMap<ftTiledPropertySet>
     
-    ' Tile images for faster access with ID
+    'summary: Tile images for faster access
     Field tileImages:Image[]
     
-    ' Total tile count
+    'summary: Total tile count
     Field totalTiles:Int
     
     #REM
@@ -56,6 +57,66 @@ Class ftTiledTileset
         
         tileProperties = New IntMap<ftTiledPropertySet>()
         properties = New ftTiledPropertySet
+    End
+    
+    'summary: Tileset's name
+    Method GetName:String()
+        Return name
+    End
+    
+    'summary: Tileset width in pixels
+    Method GetWidth:Int()
+        Return width
+    End
+    
+    'summary: Tileset height in pixels
+    Method GetHeight:Int()
+        Return height
+    End
+    
+    'summary: Tileset width in tiles
+    Method GetWidthInTiles:Int()
+        Return widthInTiles
+    End
+    
+    'summary: Tileset height in tiles
+    Method GetHeightInTiles:Int()
+        Return heightInTiles
+    End
+    
+    'summary: Returns the total tile count
+    Method GetTileCount:Int()
+        Return totalTiles
+    End
+    
+    'summary: Returns the corresponding image for tile ID
+    Method GetTileImage:Image(gid:Int)
+        If gid >= tileImages.Length() Then gid -= tileImages.Length()
+        If gid < 0 Then gid += tileImages.Length()
+        Return tileImages[gid]
+    End
+    
+    'summary: Draws the tile image to coordinates (image handles are in top-left corner)
+    Method DrawTileImage:Void(gid:Int, x:Float, y:Float)
+        If gid >= tileImages.Length() Then gid -= tileImages.Length()
+        If gid < 0 Then gid += tileImages.Length()
+        DrawImage(tileImages[gid], x, y)
+    End
+    
+    'summary: Tileset's properties
+    Method GetProperties:ftTiledPropertySet()
+        Return properties
+    End
+    
+    'summary: Tile specific properties
+    Method GetTileProperties:ftTiledPropertySet(gid:Int)
+        Local id:Int = gid - firstGID ' It doesn't belong to this tileset, unless we do this.
+        If tileProperties.Contains(id) Then
+            Return tileProperties.Get(id)
+        Else
+            ftTiledMap.PrintWarning("ftTiledTileset", "Tile properties for ID '" + id + "' doesn't exist. (Global ID: '" + gid + "')")
+            Return Null
+        End
     End
     
     #REM

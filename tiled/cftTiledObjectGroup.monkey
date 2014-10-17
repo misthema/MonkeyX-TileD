@@ -14,25 +14,28 @@ Public
 #END
 
 Class ftTiledObjectGroup
-    ' Group name
+    'summary: ObjectGroup's name
     Field name:String
     
-    ' Parent tilemap
+    'summary: Parent tilemap
     Field parent:ftTiledMap
     
-    ' Dimensions
+    'summary: Dimensions
     Field width:Int, height:Int
     
-    ' Group's properties
+    'summary: ObjectGroup's properties
     Field properties:ftTiledPropertySet
     
-    ' Objects
+    'summary: Objects
     Field objects:StringMap<ftTiledObject>
     
-    ' Group's color
+    'summary: ObjectGroup's color
     Field rgba:ftRGBA
+    
+    'summary: ObjectGroup's alpha value and boolean for visibility.
     Field opacity:Float, visible:Bool
     
+    'summary: Creates a new ObjectGroup
     Method New(parent:ftTiledMap)
         Self.parent = parent
         
@@ -40,35 +43,42 @@ Class ftTiledObjectGroup
         Self.properties = New ftTiledPropertySet
     End
     
-    ' Get object by name
+    'summary: Get object by name
     Method GetObject:ftTiledObject(name:String)
         Return objects.Get(name)
     End
     
+    'summary: Get all objects.
     Method GetObjects:StringMap<ftTiledObject>()
         Return objects
     End
     
+    'summary: Properties for ObjectGroup
     Method GetProperties:ftTiledPropertySet()
         Return properties
     End
     
+    'summary: Parent TiledMap
     Method GetParent:ftTiledMap()
         Return parent
     End
     
+    'summary: ObjectGroup's name
     Method GetName:String()
         Return name
     End
     
+    'summary: Width
     Method GetWidth:Int()
         Return width
     End
     
+    'summary: Height
     Method GetHeight:Int()
         Return height
     End
     
+    'summary: ObjectGroup's color
     Method GetRGBA:ftRGBA()
         Return rgba
     End

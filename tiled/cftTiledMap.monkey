@@ -30,47 +30,84 @@ Class ftTiledMap
         ' For XML
         Field _realPath:String
         Field _doc:XMLDoc, _error:XMLError
+        Field _classPrefix:String = "ftTiledMap"
     Public
         Const ORTHOGONAL:Int = 0
         Const ISOMETRIC:Int = 1
     
-        ' All tilesets for this map
+        'summary: All tilesets for this map
         Field tilesets:StringMap<ftTiledTileset>
         
-        ' All layers for this map
+        'summary: All layers for this map
         Field layers:StringMap<ftTiledLayer>
         
-        ' All object groups for this map
+        'summary: All object groups for this map
         Field objectGroups:StringMap<ftTiledObjectGroup>
         
-        ' All image layers for this map
+        'summary: All image layers for this map
         Field imgLayers:StringMap<ftTiledImageLayer>
         
-        ' Kind of useless, but still stored
+        'summary: Kind of useless, but still stored
         Field version:String
         
-        ' Determines how this should be rendered
+        'summary: Tilemap's orientation (orthogonal, isometric, etc.)
         Field orientationStr:String
         Field orientationInt:Int
         
-        ' Dimensions in tiles
+        'summary: Dimensions in tiles
         Field width:Int, height:Int
         
-        ' Dimensions in pixels
+        'summary: Dimensions in pixels
         Field fullWidth:Int, fullHeight:Int
         
-        ' Tile dimensions (for tilemaps grid)
+        'summary: Tile dimensions (for tilemaps grid)
         Field tileWidth:Int, tileHeight:Int
         
-        ' Properties for map itself
+        'summary: Properties for map itself
         Field properties:ftTiledPropertySet
         
-    
+    'summary: Creates a new ftTiledMap-instance. The "path" is loaded from "data" folder.
     Method New(path:String)
         _realPath = ExtractDir(RealPath(path))
         LoadXML(LoadString(path), path)
     End
     
+    'summary: Tilemap's orientation.  (orthogonal, isometric, etc.)
+    Method GetOrientation:String()
+        Return orientationStr
+    End
+    
+    'summary: Tilemap width in tiles.
+    Method GetWidth:Int()
+        Return width
+    End
+    
+    'summary: Tilemap height in tiles.
+    Method GetHeight:Int()
+        Return height
+    End
+    
+    'summary: Tilemap width in pixels.
+    Method GetFullWidth:Int()
+        Return fullWidth
+    End
+    
+    'summary: Tilemap height in pixels.
+    Method GetFullHeight:Int()
+        Return fullHeight
+    End
+    
+    'summary: Tile dimensions in this class indicate the size of the grid when creating the map in TileD (might differ with tilesets!)
+    Method GetTileWidth:Int()
+        Return tileWidth
+    End
+    
+    'summary: Tile dimensions in this class indicate the size of the grid when creating the map in TileD (might differ with tilesets!)
+    Method GetTileHeight:Int()
+        Return tileHeight
+    End
+    
+    'summary: Returns the tileset where the 'gid' belongs to.
     Method GetTilesetForGID:ftTiledTileset(gid:Int)
         Local tileset:ftTiledTileset
         For tileset = EachIn tilesets.Values()
@@ -82,7 +119,66 @@ Class ftTiledMap
         Return Null
     End
     
+    'summary: Returns a tileset by name if it exists.
+    Method GetTileset:ftTiledTileset(name:String)
+        If tilesets.Contains(name) Then
+            Return tilesets.Get(name)
+        Else
+            PrintWarning(_classPrefix, "Tileset '" + name + "' not found.")
+            Return Null
+        End
+    End
+    
+    'summary: Returns a image-layer by name if it exists.
+    Method GetImageLayer:ftTiledImageLayer(name:String)
+        If imgLayers.Contains(name) Then
+            Return imgLayers.Get(name)
+        Else
+            PrintWarning(_classPrefix, "Image-layer '" + name + "' not found.")
+            Return Null
+        End
+    End
+    
+    'summary: Returns a layer by name if it exists.
+    Method GetLayer:ftTiledLayer(name:String)
+        If layers.Contains(name) Then
+            Return layers.Get(name)
+        Else
+            PrintWarning(_classPrefix, "Layer '" + name + "' not found.")
+            Return Null
+        End
+    End
+    
+    'summary: Returns an object group by name if it exists.
+    Method GetObjectGroup:ftTiledObjectGroup(name:String)
+        If objectGroups.Contains(name) Then
+            Return objectGroups.Get(name)
+        Else
+            PrintWarning(_classPrefix, "Object group '" + name + "' not found.")
+            Return Null
+        End
+    End
+    
+    'summary: Returns the 'map properties'.
+    Method GetProperties:ftTiledPropertySet()
+        Return properties
+    End
+    
+    'summary: Returns a property value by name if the property exists.
+    Method GetPropertyValue:String(name:String)
+        If properties.Contains(name) Then
+            Return properties.Get(name)
+        Else
+            PrintWarning(_classPrefix, "Property '" + name + "' doesn't exist.")
+            Return ""
+        End
+    End
+    
     Private
+        Function PrintWarning:Void(classPrefix:String, msg:String)
+            Print classPrefix + ": " + msg
+        End
+    
         #REM
             Private loading, just because these aren't needed anywhere else.
             Parameter 'fileName' is only provided for better error descriptions.
@@ -518,4 +614,3 @@ Class ftTiledMap
         End
         '#End Region
 End
-

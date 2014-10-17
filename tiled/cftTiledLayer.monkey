@@ -11,22 +11,22 @@ Public
 #END
 
 Class ftTiledLayer
-    ' Layer name
+    'summary: Layer name
     Field name:String
     
-    ' Parent tilemap
+    'summary: Parent tilemap
     Field parent:ftTiledMap
     
-    ' Layer dimensions
+    'summary: Layer dimensions
     Field width:Int, height:Int
     
-    ' Layer's alpha and visibility
+    'summary: Layer's alpha and visibility
     Field opacity:Float, visible:Bool
     
-    ' Layer properties
+    'summary: Layer properties
     Field properties:ftTiledPropertySet
     
-    ' Tiles in this layer
+    'summary: Tile IDs in this layer
     Field tiles:Int[][]
     
     Method New(name:String, width:Int, height:Int, parent:ftTiledMap)
@@ -38,42 +38,52 @@ Class ftTiledLayer
         InitTileArray()
     End
     
+    'summary: Layer name
     Method GetName:String()
         Return name
     End
     
+    'summary: Layer width
     Method GetWidth:Int()
         Return width
     End
     
+    'summary: Layer height
     Method GetHeight:Int()
         Return height
     End
     
+    'summary: Layer alpha
     Method GetOpacity:Float()
         Return opacity
     End
     
+    'summary: Layer's visibility (True/False)
     Method GetVisible:Bool()
         Return visible
     End
     
+    'summary: Layer's properties
     Method GetProperties:ftTiledPropertySet()
         Return properties
     End
     
+    'summary: Use this method to modify the tiles in layer
     Method SetTile:Void(x:Int, y:Int, newID:Int)
         tiles[x][y] = newID
     End
     
+    'summary: Get tile from X,Y
     Method GetTile:Int(x:Int, y:Int)
         Return tiles[x][y]
     End
     
+    'summary: Returns the tile-array.
     Method GetTiles:Int[][] ()
         Return tiles
     End
     
+    'summary: Parent TiledMap
     Method GetParent:ftTiledMap()
         Return parent
     End

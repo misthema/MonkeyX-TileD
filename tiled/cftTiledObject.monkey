@@ -10,80 +10,100 @@ Public
 #END
 
 Class ftTiledObject
+    'summary: Rectangle type object
     Const RECTANGLE:Int = 0
+    'summary: Ellipse type object
     Const ELLIPSE:Int = 1
+    'summary: Polygon type object
     Const POLYGON:Int = 2
+    'summary: Polyline type object
     Const POLYLINE:Int = 3
 
-    ' Object's name
+    'summary:  Object's name
     Field name:String
     
-    ' Object's type
+    'summary:  Object's type
     Field type:String
     
-    ' Parent tilemap
+    'summary:  Parent tilemap
     Field parent:ftTiledMap
     
-    ' Position in the map
+    'summary:  Position in the map
     Field x:Float, y:Float
     
-    ' Dimensions
+    'summary:  Dimensions
     Field width:Int, height:Int
     
-    ' Properties
+    'summary:  Properties
     Field properties:ftTiledPropertySet
     
-    ' The type of polygon
+    'summary:  The type of polygon
     Field objType:Int
     
-    ' Polygon/polyline points (n = x, n+1 = y)
+    'summary:  Polygon/polyline points (n = x, n+1 = y)
     Field points:Float[]
     
+    'summary: Creates a new object.
     Method New(parent:ftTiledMap)
         Self.parent = parent
         Self.properties = New ftTiledPropertySet
     End
     
+    'summary: Object's name. This is set by map-maker in the editor.
     Method GetName:String()
         Return name
     End
     
+    'summary: Object's type. This is set by map-maker in the editor. You can use this to see if the object is for example an enemy, or a player_start_position.
     Method GetType:String()
         Return type
     End
     
+    'summary: Object's X-coordinate
     Method GetX:Float()
         Return x
     End
     
+    'summary: Object's Y-coordinate
     Method GetY:Float()
         Return y
     End
     
+    'summary: Object width
     Method GetWidth:Int()
         Return width
     End
     
+    'summary: Object height.
     Method GetHeight:Int()
         Return height
     End
     
+    'summary: If object has points, returns True, if not, returns False.
     Method HasPoints:Bool()
         Return (points.Length() > 0)
     End
     
+    'summary: Get X value for point by index
     Method GetPointX:Float(index:Int)
-        WrapIndex(index)
+        index = WrapIndex(index)
         Return points[index]
     End
     
+    'summary: Get Y value for point by index.
     Method GetPointY:Float(index:Int)
-        WrapIndex(index)
+        index = WrapIndex(index + 1)
         Return points[index + 1]
     End
     
+    'summary: Returns the point array.
     Method GetPoints:Float[] ()
         Return points
+    End
+    
+    'summary: Returns the type constant of object. (RECTANGLE, ELLIPSE, POLYGON or POLYLINE)
+    Method GetObjectType:Int()
+        Return objType
     End
     
     Method AddPoint:Void(x:Float, y:Float)

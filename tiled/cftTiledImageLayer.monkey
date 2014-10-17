@@ -10,25 +10,25 @@ Public
 
 Class ftTiledImageLayer
 
-    ' Layer name
+    'summary: Layer name
     Field name:String
     
-    ' Parent tilemap
+    'summary: Parent tilemap
     Field parent:ftTiledMap
     
-    ' Layer dimensions
+    'summary: Layer dimensions
     Field width:Int, height:Int
     
-    ' Layer's alpha and visibility
+    'summary: Layer's alpha and visibility
     Field opacity:Float, visible:Bool
     
-    ' Layer properties
+    'summary: Layer properties
     Field properties:ftTiledPropertySet
     
-    ' Layer's image
+    'summary: Layer's image
     Field image:Image
     
-    ' Image color transform
+    'summary: Image's color-transform
     Field rgba:ftRGBA
     
     
@@ -37,38 +37,47 @@ Class ftTiledImageLayer
         Self.properties = New ftTiledPropertySet()
     End
     
+    'summary: Layer's name
     Method GetName:String()
         Return name
     End
     
+    'summary: Layer's width
     Method GetWidth:Int()
         Return width
     End
     
+    'summary: Layer's height
     Method GetHeight:Int()
         Return height
     End
     
+    'summary: Layer's image
     Method GetImage:Image()
         Return image
     End
     
+    'summary: Layer's alpha
     Method GetOpacity:Float()
         Return opacity
     End
     
+    'summary: Layer's visibility
     Method GetVisible:Bool()
         Return visible
     End
     
+    'summary: Color for image tinting
     Method GetRGBA:ftRGBA()
         Return color
     End
     
+    'summary: Layer properties
     Method GetProperties:ftTiledPropertySet()
         Return properties
     End
     
+    'summary: Parent TiledMap
     Method GetParent:ftTiledMap()
         Return parent
     End

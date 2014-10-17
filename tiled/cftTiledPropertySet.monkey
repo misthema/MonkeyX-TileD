@@ -16,16 +16,19 @@ Class ftTiledPropertySet
         Field _keys:StringMap<String>
     Public
     
+    'summary: Returns an attribute's value
     Method Get:String(name:String)
         If _keys = Null Then Return ""
         Return _keys.Get(name)
     End
     
+    'summary: Check if property has an attribute 'name'
     Method Contains:Bool(name:String)
         If _keys = Null Then Return False
         Return _keys.Contains(name)
     End
     
+    'summary: This is used by the loader. Would not recommend using this elsewhere.
     Method Extend:Void(node:XMLNode)
         If node.name <> "properties" Return
         
