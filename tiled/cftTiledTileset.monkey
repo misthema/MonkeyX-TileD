@@ -124,22 +124,16 @@ Class ftTiledTileset
     #END
     Method LoadImages:Void()
         If Not image Then Error("Unable to load tileset!~nName: '" + name + "'")
-        
-        widthInTiles = width / parent.tileWidth
-        heightInTiles = height / parent.tileHeight
-        
-        totalTiles = widthInTiles * heightInTiles
-        tileImages = New Image[totalTiles]
-        
+
         Local x:Int, y:Int
         
         For Local i:= 0 Until totalTiles
             ' Calculate coordinates with tile ID
-            x = (i Mod width) * parent.tileWidth
-            y = i / width * parent.tileHeight
+            x = (i Mod widthInTiles) * tileWidth
+            y = i / widthInTiles * tileHeight
             
             ' Grab the tile image
-            tileImages[i] = image.GrabImage(x, y, parent.tileWidth, parent.tileHeight)
+            tileImages[i] = image.GrabImage(x, y, tileWidth, tileHeight)
         Next
     End
 End
